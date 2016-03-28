@@ -182,7 +182,14 @@
 				var newChar         = String.fromCharCode(charCode);
 
 				// Determine if some text was selected / highlighted when the key was pressed
-				var selectionObject = $textbox.selection();
+				var selectionObject;
+				try {
+					selectionObject = $textbox.selection();
+				} catch (e) {
+					// This can happen on browsers that removed selection API from some
+					// elements. See https://github.com/KevinSheedy/jquery.alphanum/issues/19
+					selectionObject = {start: 0, end: $textbox.val().length};
+				}
 				var start = selectionObject.start;
 				var end   = selectionObject.end;
 
